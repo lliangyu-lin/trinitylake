@@ -35,13 +35,12 @@ message TableDef {
 }
 
 message ViewDef {
-  bool schema_binding = 2;
-  optional Schema schema = 3;
-  repeated SQLRepresentation representation = 4;
-  optional string view_type = 5;
-  string view_format = 6;
-  map<string, string> format_properties = 7;
-  map<string, string> properties = 8;
+  string view_type = 2;
+  bool schema_binding = 3;
+  Schema schema = 4;
+  repeated SQLRepresentation sql_representation = 5;
+  repeated string referenced_objects = 6
+  map<string, string> properties = 7;
 }
 
 message SQLRepresentation {
