@@ -38,8 +38,8 @@ message ViewDef {
   string view_type = 2;
   bool schema_binding = 3;
   Schema schema = 4;
-  repeated SQLRepresentation sql_representation = 5;
-  repeated string referenced_objects = 6
+  repeated SQLRepresentation sql_representations = 5;
+  repeated string referenced_objects = 6;
   map<string, string> properties = 7;
 }
 
