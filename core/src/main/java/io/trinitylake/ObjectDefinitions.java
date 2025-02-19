@@ -110,9 +110,26 @@ public class ObjectDefinitions {
       String path,
       String namespaceName,
       String viewName,
-      TableDef viewDef) {}
+      TableDef viewDef) {
+    try (OutputStream stream = storage.startCommit(path)) {
+      viewDef.writeTo(stream);
+    } catch (IOException e) {
+      throw new StorageWriteFailureException(
+          e,
+          "Failed to write namespace %s view %s definition to storage path %s at %s",
+          namespaceName,
+          viewName,
+          path,
+          storage.root());
+    }
+  }
 
   public static ViewDef readViewDef(LakehouseStorage storage, String path) {
-    return null;
+    try (InputStream stream = storage.startRead(path)) {
+      return ViewDef.parseFrom(stream);
+    } catch (IOException e) {
+      throw new StorageReadFailureException(
+          e, "Failed to read view definition from storage path %s at %s", path, storage.root());
+    }
   }
 }
