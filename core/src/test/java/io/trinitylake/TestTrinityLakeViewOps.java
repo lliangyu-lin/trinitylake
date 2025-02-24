@@ -15,7 +15,11 @@ package io.trinitylake;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.trinitylake.models.*;
+import io.trinitylake.models.FullName;
+import io.trinitylake.models.LakehouseDef;
+import io.trinitylake.models.NamespaceDef;
+import io.trinitylake.models.SQLRepresentation;
+import io.trinitylake.models.ViewDef;
 import io.trinitylake.relocated.com.google.common.collect.ImmutableMap;
 import io.trinitylake.storage.BasicLakehouseStorage;
 import io.trinitylake.storage.CommonStorageOpsProperties;
