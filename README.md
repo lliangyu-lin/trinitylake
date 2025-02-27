@@ -37,6 +37,7 @@ TrinityLake Java SDK is built using Gradle with Java 11, 17, 21, or 23.
 
 The TrinityLake project website is built using the [mkdocs-material](https://pypi.org/project/mkdocs-material/) framework with a few other plugins.
 
+
 #### First time setup
 
 ```bash
