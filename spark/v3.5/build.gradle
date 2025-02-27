@@ -126,7 +126,11 @@ project(":trinitylake-spark:trinitylake-spark-runtime-${sparkMajorVersion}_${sca
 
         // Relocate dependencies to avoid conflicts
         relocate 'com.google.errorprone', 'io.trinitylake.shaded.com.google.errorprone'
+        relocate 'com.google.flatbuffers', 'io.trinitylake.shaded.com.google.flatbuffers'
+        relocate 'com.google.protobuf', 'io.trinitylake.shaded.com.google.protobuf'
         relocate 'com.github.benmanes', 'io.trinitylake.shaded.com.github.benmanes'
+        relocate 'com.fasterxml', 'io.trinitylake.shaded.com.fasterxml'
+        relocate 'com.ibm', 'io.trinitylake.shaded.com.fasterxml'
         // relocate Arrow and related deps to shade TrinityLake specific version
         relocate 'org.apache.arrow', 'io.trinitylake.shaded.org.apache.arrow'
 
