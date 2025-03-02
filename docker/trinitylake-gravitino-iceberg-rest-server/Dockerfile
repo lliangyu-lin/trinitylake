@@ -12,7 +12,7 @@
 # limitations under the License.
 #
 
-FROM azul/zulu-openjdk:17-jre-headless
+FROM openjdk:17-jdk-slim
 
 # Set environment variables
 ENV WORK_DIR=/usr/lib/trinitylake-gravitino-iceberg-rest
