@@ -20,6 +20,8 @@ ENV GRAVITINO_VERSION=0.8.0-incubating
 ENV GRAVITINO_HOME=$WORK_DIR/gravitino
 ENV REST_PORT=9001
 
+
+
 # Set up the user and group
 RUN  set -xeu && \
      groupadd trinitylake --gid 1000 && \
