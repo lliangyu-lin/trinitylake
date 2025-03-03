@@ -37,8 +37,8 @@ jobs:
         with:
           distribution: zulu
           java-version: 21
-      - name: Build trinitylake-spark project
-        run: ./gradlew :trinitylake-spark:build
+      - name: Build trinitylake-spark-runtime jar
+        run: :trinitylake-spark:trinitylake-spark-runtime-3.5_2.12:shadowJar
       - name: Login to Docker Hub
         run: |
           docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
