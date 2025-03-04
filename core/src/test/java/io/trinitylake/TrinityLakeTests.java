@@ -24,7 +24,6 @@ import io.trinitylake.models.DataType;
 import io.trinitylake.models.FullName;
 import io.trinitylake.models.LakehouseDef;
 import io.trinitylake.models.NamespaceDef;
-import io.trinitylake.models.SQLRepresentation;
 import io.trinitylake.models.Schema;
 import io.trinitylake.models.TableDef;
 import io.trinitylake.models.ViewDef;
@@ -69,12 +68,6 @@ public abstract class TrinityLakeTests {
   protected static final ViewDef VIEW_DEF =
       ObjectDefinitions.newViewDefBuilder()
           .setSchemaBinding(false)
-          .addSqlRepresentations(
-              SQLRepresentation.newBuilder()
-                  .setType("sql")
-                  .setSql("select 'foo' foo")
-                  .setDialect("spark-sql")
-                  .build())
           .addReferencedObjectFullNames(
               FullName.newBuilder().setNamespaceName(NAMESPACE).setName(TABLE1).build())
           .putProperties("k1", "v1")
