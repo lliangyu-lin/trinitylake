@@ -16,21 +16,21 @@ package io.trinitylake.util;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.substrait.proto.ReadRel;
-import io.trinitylake.relocated.com.google.common.base.Preconditions;
+import io.trinitylake.exception.InvalidArgumentException;
 
 public class SubstraitUtil {
 
   private SubstraitUtil() {}
 
   public static ReadRel loadSubstraitReadReal(ByteString substraitReadRelBytes) {
-    Preconditions.checkArgument(
+    ValidationUtil.checkArgument(
         substraitReadRelBytes != null && !substraitReadRelBytes.isEmpty(),
         "substraitReadRelBytes cannot be null or empty.");
 
     try {
       return ReadRel.parseFrom(substraitReadRelBytes);
     } catch (InvalidProtocolBufferException e) {
-      throw new IllegalArgumentException(
+      throw new InvalidArgumentException(
           "Invalid Substrait read relation: Unable to parse bytes.", e);
     }
   }

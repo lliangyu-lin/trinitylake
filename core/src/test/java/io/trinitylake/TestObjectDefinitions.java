@@ -15,6 +15,9 @@ package io.trinitylake;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.substrait.proto.NamedStruct;
+import io.substrait.proto.ReadRel;
+import io.substrait.proto.Rel;
 import io.trinitylake.models.LakehouseDef;
 import io.trinitylake.models.NamespaceDef;
 import io.trinitylake.models.TableDef;
@@ -26,7 +29,6 @@ import io.trinitylake.storage.LakehouseStorage;
 import io.trinitylake.storage.LiteralURI;
 import io.trinitylake.storage.local.LocalStorageOps;
 import io.trinitylake.storage.local.LocalStorageOpsProperties;
-import io.trinitylake.utils.TestSubstraitUtil;
 import java.io.File;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +51,14 @@ public class TestObjectDefinitions {
   private final ViewDef testViewDef =
       ObjectDefinitions.newViewDefBuilder()
           .setSchemaBinding(false)
-          .setSubstraitReadRel(TestSubstraitUtil.selectAllSubstraitPlanByteString())
+          .setSubstraitReadRel(
+              Rel.newBuilder()
+                  .setRead(
+                      ReadRel.newBuilder()
+                          .setBaseSchema(NamedStruct.newBuilder().addNames("table1").build())
+                          .build())
+                  .build()
+                  .toByteString())
           .putProperties("k1", "v1")
           .build();
 

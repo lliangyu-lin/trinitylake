@@ -22,31 +22,26 @@ import io.substrait.proto.Plan;
 import io.substrait.proto.PlanRel;
 import io.substrait.proto.ReadRel;
 import io.substrait.proto.Rel;
+import io.trinitylake.exception.InvalidArgumentException;
 import io.trinitylake.util.SubstraitUtil;
 import org.junit.jupiter.api.Test;
 
 public class TestSubstraitUtil {
 
-  public static ByteString selectAllSubstraitPlanByteString() {
+  @Test
+  public void testValidSubstraitPlan() {
     Plan.Builder planBuilder = Plan.newBuilder();
-
     Rel.Builder relationBuilder = Rel.newBuilder();
     relationBuilder.setRead(
         ReadRel.newBuilder()
             .setBaseSchema(NamedStruct.newBuilder().addNames("table").build())
             .build());
-
     planBuilder.addRelations(PlanRel.newBuilder().setRel(relationBuilder.build()));
-
-    return ByteString.copyFrom(planBuilder.build().toByteArray());
-  }
-
-  @Test
-  public void testValidSubstraitPlan() {
-    ByteString validPlan = selectAllSubstraitPlanByteString();
+    ByteString validReadRelByteString = ByteString.copyFrom(planBuilder.build().toByteArray());
 
     // Expect no exception
-    assertThatCode(() -> SubstraitUtil.loadSubstraitReadReal(validPlan)).doesNotThrowAnyException();
+    assertThatCode(() -> SubstraitUtil.loadSubstraitReadReal(validReadRelByteString))
+        .doesNotThrowAnyException();
   }
 
   @Test
@@ -55,7 +50,7 @@ public class TestSubstraitUtil {
 
     // Expect IllegalArgumentException when passing invalid data
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(invalidPlan))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(InvalidArgumentException.class)
         .hasMessageContaining("Invalid Substrait read relation");
   }
 
@@ -64,7 +59,7 @@ public class TestSubstraitUtil {
     ByteString emptyPlan = ByteString.EMPTY;
 
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(emptyPlan))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(InvalidArgumentException.class)
         .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
   }
 
@@ -73,7 +68,7 @@ public class TestSubstraitUtil {
     ByteString nullPlan = null;
 
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(nullPlan))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(InvalidArgumentException.class)
         .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
   }
 }
