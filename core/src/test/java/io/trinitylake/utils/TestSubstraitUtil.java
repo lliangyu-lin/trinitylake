@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.protobuf.ByteString;
 import io.substrait.proto.NamedStruct;
 import io.substrait.proto.ReadRel;
-import io.substrait.proto.Rel;
 import io.substrait.proto.WriteRel;
 import io.trinitylake.exception.InvalidArgumentException;
 import io.trinitylake.util.SubstraitUtil;
@@ -29,7 +28,8 @@ public class TestSubstraitUtil {
 
   @Test
   public void testValidSubstraitReadRel() {
-    ReadRel readRel = ReadRel.newBuilder()
+    ReadRel readRel =
+        ReadRel.newBuilder()
             .setBaseSchema(NamedStruct.newBuilder().addNames("table").build())
             .build();
     ByteString validReadRelByteString = ByteString.copyFrom(readRel.toByteArray());
@@ -41,15 +41,16 @@ public class TestSubstraitUtil {
 
   @Test
   public void testNonSubstraitReadRel() {
-    WriteRel writeRel = WriteRel.newBuilder()
+    WriteRel writeRel =
+        WriteRel.newBuilder()
             .setTableSchema(NamedStruct.newBuilder().addNames("table").build())
             .build();
     ByteString writeRelByteString = ByteString.copyFrom(writeRel.toByteArray());
 
     // Expect IllegalArgumentException when passing invalid data
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(writeRelByteString))
-            .isInstanceOf(InvalidArgumentException.class)
-            .hasMessageContaining("Invalid Substrait read relation");
+        .isInstanceOf(InvalidArgumentException.class)
+        .hasMessageContaining("Invalid Substrait read relation");
   }
 
   @Test
