@@ -63,7 +63,6 @@ public class TestSubstraitUtil {
   public void testEmptySubstraitPlan() {
     ByteString emptyPlan = ByteString.EMPTY;
 
-    // Expect no exception
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(emptyPlan))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
@@ -73,7 +72,6 @@ public class TestSubstraitUtil {
   public void testNullSubstraitPlan() {
     ByteString nullPlan = null;
 
-    // Expect no exception
     assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(nullPlan))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
