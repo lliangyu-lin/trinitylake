@@ -438,7 +438,7 @@ public class TrinityLake {
       throw new ObjectNotFoundException(
           "Namespace %s view %s does not exists", namespaceName, viewName);
     }
-    //    SubstraitUtil.checkValidSubstraitPlan(viewDef.substraitReadRel());
+    SubstraitUtil.checkValidSubstraitReadRel(viewDef.getSubstraitReadRel());
 
     String viewDefFilePath = FileLocations.newViewDefFilePath(namespaceName, viewName);
     ObjectDefinitions.writeViewDef(storage, viewDefFilePath, namespaceName, viewName, viewDef);
