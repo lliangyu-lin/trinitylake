@@ -46,8 +46,7 @@ public class TestSubstraitUtil {
     ByteString validPlan = selectAllSubstraitPlanByteString();
 
     // Expect no exception
-    assertThatCode(() -> SubstraitUtil.checkValidSubstraitReadRel(validPlan))
-        .doesNotThrowAnyException();
+    assertThatCode(() -> SubstraitUtil.loadSubstraitReadReal(validPlan)).doesNotThrowAnyException();
   }
 
   @Test
@@ -55,9 +54,9 @@ public class TestSubstraitUtil {
     ByteString invalidPlan = ByteString.copyFromUtf8("non substrait plan");
 
     // Expect IllegalArgumentException when passing invalid data
-    assertThatThrownBy(() -> SubstraitUtil.checkValidSubstraitReadRel(invalidPlan))
+    assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(invalidPlan))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Invalid Substrait plan: Unable to parse bytes.");
+        .hasMessageContaining("Invalid Substrait read relation");
   }
 
   @Test
@@ -65,8 +64,9 @@ public class TestSubstraitUtil {
     ByteString emptyPlan = ByteString.EMPTY;
 
     // Expect no exception
-    assertThatCode(() -> SubstraitUtil.checkValidSubstraitReadRel(emptyPlan))
-        .doesNotThrowAnyException();
+    assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(emptyPlan))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
   }
 
   @Test
@@ -74,7 +74,8 @@ public class TestSubstraitUtil {
     ByteString nullPlan = null;
 
     // Expect no exception
-    assertThatCode(() -> SubstraitUtil.checkValidSubstraitReadRel(nullPlan))
-        .doesNotThrowAnyException();
+    assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(nullPlan))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("substraitReadRelBytes cannot be null or empty");
   }
 }

@@ -16,7 +16,6 @@ package io.trinitylake;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.google.protobuf.ByteString;
 import io.trinitylake.exception.NonEmptyNamespaceException;
 import io.trinitylake.exception.ObjectAlreadyExistsException;
 import io.trinitylake.exception.ObjectNotFoundException;
@@ -320,27 +319,6 @@ public abstract class TrinityLakeTests {
     assertThat(v1Path.isPresent()).isTrue();
     ViewDef readDef = ObjectDefinitions.readViewDef(storage, v1Path.get());
     assertThat(readDef).isEqualTo(VIEW_DEF);
-  }
-
-  @Test
-  public void testCreateInvalidSubstraitView() {
-    LakehouseStorage storage = storage();
-    createNamespaceAndCommit();
-
-    RunningTransaction transaction = TrinityLake.beginTransaction(storage);
-
-    ViewDef invalidViewDef =
-        ObjectDefinitions.newViewDefBuilder()
-            .setSchemaBinding(false)
-            .setSubstraitReadRel(ByteString.copyFromUtf8("non substrait plan"))
-            .addReferencedObjectFullNames(
-                FullName.newBuilder().setNamespaceName(NAMESPACE).setName(TABLE1).build())
-            .putProperties("k1", "v1")
-            .build();
-    assertThatThrownBy(
-            () -> TrinityLake.createView(storage, transaction, NAMESPACE, VIEW, invalidViewDef))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Invalid Substrait plan");
   }
 
   @Test

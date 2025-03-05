@@ -28,7 +28,6 @@ import io.trinitylake.tree.BasicTreeRoot;
 import io.trinitylake.tree.NodeKeyTableRow;
 import io.trinitylake.tree.TreeOperations;
 import io.trinitylake.tree.TreeRoot;
-import io.trinitylake.util.SubstraitUtil;
 import io.trinitylake.util.ValidationUtil;
 import java.util.List;
 import java.util.Map;
@@ -413,7 +412,6 @@ public class TrinityLake {
       throw new ObjectAlreadyExistsException(
           "Namespace %s view %s already exists", namespaceName, viewName);
     }
-    SubstraitUtil.checkValidSubstraitReadRel(viewDef.getSubstraitReadRel());
 
     String viewDefFilePath = FileLocations.newViewDefFilePath(namespaceName, viewName);
     ObjectDefinitions.writeViewDef(storage, viewDefFilePath, namespaceName, viewName, viewDef);
@@ -438,7 +436,6 @@ public class TrinityLake {
       throw new ObjectNotFoundException(
           "Namespace %s view %s does not exists", namespaceName, viewName);
     }
-    SubstraitUtil.checkValidSubstraitReadRel(viewDef.getSubstraitReadRel());
 
     String viewDefFilePath = FileLocations.newViewDefFilePath(namespaceName, viewName);
     ObjectDefinitions.writeViewDef(storage, viewDefFilePath, namespaceName, viewName, viewDef);
