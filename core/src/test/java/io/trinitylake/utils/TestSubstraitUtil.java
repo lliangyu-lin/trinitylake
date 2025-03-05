@@ -18,10 +18,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.protobuf.ByteString;
 import io.substrait.proto.NamedStruct;
-import io.substrait.proto.Plan;
-import io.substrait.proto.PlanRel;
 import io.substrait.proto.ReadRel;
 import io.substrait.proto.Rel;
+import io.substrait.proto.WriteRel;
 import io.trinitylake.exception.InvalidArgumentException;
 import io.trinitylake.util.SubstraitUtil;
 import org.junit.jupiter.api.Test;
@@ -29,19 +28,28 @@ import org.junit.jupiter.api.Test;
 public class TestSubstraitUtil {
 
   @Test
-  public void testValidSubstraitPlan() {
-    Plan.Builder planBuilder = Plan.newBuilder();
-    Rel.Builder relationBuilder = Rel.newBuilder();
-    relationBuilder.setRead(
-        ReadRel.newBuilder()
+  public void testValidSubstraitReadRel() {
+    ReadRel readRel = ReadRel.newBuilder()
             .setBaseSchema(NamedStruct.newBuilder().addNames("table").build())
-            .build());
-    planBuilder.addRelations(PlanRel.newBuilder().setRel(relationBuilder.build()));
-    ByteString validReadRelByteString = ByteString.copyFrom(planBuilder.build().toByteArray());
+            .build();
+    ByteString validReadRelByteString = ByteString.copyFrom(readRel.toByteArray());
 
     // Expect no exception
     assertThatCode(() -> SubstraitUtil.loadSubstraitReadReal(validReadRelByteString))
         .doesNotThrowAnyException();
+  }
+
+  @Test
+  public void testNonSubstraitReadRel() {
+    WriteRel writeRel = WriteRel.newBuilder()
+            .setTableSchema(NamedStruct.newBuilder().addNames("table").build())
+            .build();
+    ByteString writeRelByteString = ByteString.copyFrom(writeRel.toByteArray());
+
+    // Expect IllegalArgumentException when passing invalid data
+    assertThatThrownBy(() -> SubstraitUtil.loadSubstraitReadReal(writeRelByteString))
+            .isInstanceOf(InvalidArgumentException.class)
+            .hasMessageContaining("Invalid Substrait read relation");
   }
 
   @Test

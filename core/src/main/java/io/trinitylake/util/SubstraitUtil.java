@@ -15,6 +15,7 @@ package io.trinitylake.util;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import io.substrait.proto.Plan;
 import io.substrait.proto.ReadRel;
 import io.trinitylake.exception.InvalidArgumentException;
 
